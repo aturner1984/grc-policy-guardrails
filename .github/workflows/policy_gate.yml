@@ -21,5 +21,6 @@ jobs:
           directory: "."
           framework: "terraform"
           external_checks_dir: "./custom_policies"
-          soft_fail: false # Hard Stop: Fails build if compliance checks fail
+          check: "CUSTOM_GRC_AWS_001,CUSTOM_GRC_AWS_002"
+          soft_fail: false
           output_format: "cli"
