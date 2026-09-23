@@ -1,0 +1,12 @@
+metadata:
+  id: "CUSTOM_GRC_AWS_001"
+  name: "Ensure all S3 buckets contain a mandatory CostCenter tag for governance"
+  category: "convention"
+  severity: "HIGH"
+
+definition:
+  cond_type: "attribute"
+  resource_types:
+    - "aws_s3_bucket"
+  attribute: "tags.CostCenter"
+  operator: "exists"
