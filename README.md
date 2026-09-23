@@ -70,3 +70,19 @@ This engine translates abstract regulatory compliance requirements into explicit
    * **Requirement:** Inbound administrative access (such as SSH) must be restricted to internal corporate networks and must never be exposed publicly to the open internet.
    * **Policy Definition (`custom_policies/disallow_open_ssh.yaml`):** Evaluates `aws_security_group` ingress definitions and triggers a `CRITICAL` severity violation if `from_port: 22` is paired with `cidr_blocks: ["0.0.0.0/0"]`.
    * **Technical Enforcement (`.github/workflows/policy_gate.yml`):** Pre-deployment guardrail identifies open management ports before `terraform apply` can execute, preventing dangerous network exposure prior to cloud provisioning.
+
+---
+
+## 📊 Risk Classification & Compliance Outcome Matrix
+
+This matrix defines the severity tiering, risk impact, and dynamic pipeline action for policy violations evaluated by the guardrail engine.
+
+| Policy ID | Finding Classification | Severity Tier | Risk Impact | Pipeline Outcome |
+| :--- | :--- | :--- | :--- | :--- |
+| **CUSTOM_GRC_AWS_001** | Missing Metadata / Cost Tag | **Medium** | Unattributed cloud expenditure, broken asset tracking, and audit failure under SOC 2 CC6.1 asset management rules. | **BLOCK (PR Exit 1)** |
+| **CUSTOM_GRC_AWS_002** | Unrestricted Inbound SSH (`0.0.0.0/0`) | **Critical** | Direct internet exposure of management ports, enabling remote brute-force attacks and unauthorized network entry. | **BLOCK (PR Exit 1)** |
+| **CKV_AWS_19** | Unencrypted S3 Data at Rest | **High** | Potential data exposure following unauthorized object access or bucket leakage, violating regulatory encryption baselines. | **BLOCK (PR Exit 1)** |
+
+### Finding Resolution & Audit Trail
+* **Automated Blocking:** Non-compliant Pull Requests are automatically halted before cloud resources can be provisioned.
+* **Auditable Evidence:** All pass/fail logs are retained in GitHub Actions execution history, serving as time-stamped proof of continuous pre-deployment control enforcement for external auditors.
