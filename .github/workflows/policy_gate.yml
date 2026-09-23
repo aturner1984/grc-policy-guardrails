@@ -1,0 +1,25 @@
+name: "GRC Policy-as-Code Engine"
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  compliance-scan:
+    name: "Enforce GRC Guardrails"
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Run Checkov Policy Scan
+        uses: bridgecrewio/checkov-action@master
+        with:
+          directory: "."
+          framework: "terraform"
+          external_checks_dir: "./custom_policies"
+          soft_fail: false # Hard Stop: Fails build if compliance checks fail
+          output_format: "cli"
