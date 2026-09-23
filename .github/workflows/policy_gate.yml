@@ -21,6 +21,6 @@ jobs:
           directory: "."
           framework: "terraform"
           external_checks_dir: "./custom_policies"
-          skip_path: "non_compliant_bucket.tf"
+          check: "CUSTOM_GRC_AWS_001,CUSTOM_GRC_AWS_002"
           soft_fail: false
           output_format: "cli"
